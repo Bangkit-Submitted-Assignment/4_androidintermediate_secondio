@@ -12,7 +12,7 @@ import com.dicoding.myintermediateapplication.databinding.ListItemRowBinding
 import com.dicoding.myintermediateapplication.view.detail.DetailActivity
 import com.dicoding.myintermediateapplication.view.main.MainActivity
 
-class StoryAdapter:
+class StoryAdapter :
     ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(
         DIFF_CALLBACK
     ) {
@@ -27,24 +27,24 @@ class StoryAdapter:
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val user = getItem(position)
-        holder.bind(user)
-        holder.itemView.setOnClickListener{
-//            val sendData= Intent(holder.itemView.context, DetailActivity::class.java)
-//            sendData.putExtra(DetailActivity.USER,user.id)
-//            sendData.putExtra(DetailActivity.NAME,user.name)
-//            holder.itemView.context.startActivity(sendData)
-     }
+        val story = getItem(position)
+        holder.bind(story)
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra("STORY_ID", story.id) // Mengirim ID cerita ke DetailActivity
+            context.startActivity(intent)
+        }
     }
 
     class MyViewHolder(val binding: ListItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(review: ListStoryItem) {
-            val img = review.photoUrl
+        fun bind(story: ListStoryItem) {
+            val img = story.photoUrl
             Glide.with(binding.root.context)
                 .load(img)
                 .into(binding.itemPhoto)
-            binding.itemName.text = "${review.name}"
-            binding.itemDescription.text = review.description
+            binding.itemName.text = "${story.name}"
+            binding.itemDescription.text = story.description
         }
     }
 
