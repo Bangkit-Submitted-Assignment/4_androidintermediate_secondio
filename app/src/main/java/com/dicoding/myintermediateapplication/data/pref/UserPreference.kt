@@ -1,6 +1,7 @@
 package com.dicoding.myintermediateapplication.data.pref
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -8,6 +9,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
@@ -21,6 +23,18 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[IS_LOGIN_KEY] = true
         }
     }
+
+//    suspend fun saveToken(token: String?) {
+//        if (token != null) {
+//            dataStore.edit { preferences ->
+//                preferences[TOKEN_KEY] = token
+//                preferences[IS_LOGIN_KEY] = true
+//            }
+//        } else {
+//            // Token is null, handle it as needed (e.g., log an error)
+//            Log.e("UserPreference", "Token is null")
+//        }
+//    }
 
     fun getSession(): Flow<UserModel> {
         return dataStore.data.map { preferences ->
@@ -37,6 +51,12 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences.clear()
         }
     }
+
+    suspend fun getToken(): String? {
+        val preferences = dataStore.data.first()
+        return preferences[TOKEN_KEY]
+    }
+
 
     companion object {
         @Volatile

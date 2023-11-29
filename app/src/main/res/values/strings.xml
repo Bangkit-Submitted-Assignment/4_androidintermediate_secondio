@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyIntermediateApplication</string>
+    <string name="app_name">Dicoding Story</string>
     <string name="signup">Daftar</string>
     <string name="login">Masuk</string>
     <string name="message_welcome_page">Mau belajar Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding aja!</string>
@@ -13,4 +13,9 @@
     <string name="message_main_page">Selamat Belajar.</string>
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
+    <string name="keluar">keluar</string>
+    <string name="camera">KAMERA</string>
+    <string name="gallery">GALERI</string>
+    <string name="desc_item">deskripsi item</string>
+    <string name="upload">UPLOAD</string>
 </resources>

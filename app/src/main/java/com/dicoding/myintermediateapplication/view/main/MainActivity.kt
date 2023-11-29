@@ -1,18 +1,21 @@
 package com.dicoding.myintermediateapplication.view.main
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.view.Menu
+import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.myintermediateapplication.R
 import com.dicoding.myintermediateapplication.databinding.ActivityMainBinding
 import com.dicoding.myintermediateapplication.view.ViewModelFactory
+import com.dicoding.myintermediateapplication.view.adapter.StoryAdapter
+import com.dicoding.myintermediateapplication.view.upload.UploadActivity
 import com.dicoding.myintermediateapplication.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -20,11 +23,19 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityMainBinding
+    private lateinit var storyAdapter: StoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.title= getString(R.string.app_name)
+
+        viewModel.setStories()
+        viewModel.stories.observe(this) { stories ->
+            storyAdapter.submitList(stories)
+        }
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -35,7 +46,9 @@ class MainActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
-        playAnimation()
+        setupRecyclerView()
+        viewModel.setStories()
+//        playAnimation()
     }
 
     private fun setupView() {
@@ -48,29 +61,38 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        supportActionBar?.hide()
     }
 
     private fun setupAction() {
-        binding.logoutButton.setOnClickListener {
-            viewModel.logout()
+        binding.fabAdd.setOnClickListener {
+            val intent = Intent(this@MainActivity, UploadActivity::class.java)
+            startActivity(intent)
         }
     }
 
-    private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
-            repeatCount = ObjectAnimator.INFINITE
-            repeatMode = ObjectAnimator.REVERSE
-        }.start()
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
 
-        val name = ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(100)
-        val message = ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(100)
-        val logout = ObjectAnimator.ofFloat(binding.logoutButton, View.ALPHA, 1f).setDuration(100)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_list ->{
+                viewModel.logout()
+                val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                startActivity(intent)
+                return true
+            }else->{
+            return super.onOptionsItemSelected(item)
+            }
+        }
+    }
 
-        AnimatorSet().apply {
-            playSequentially(name, message, logout)
-            startDelay = 100
-        }.start()
+    private fun setupRecyclerView() {
+        val layoutManager = LinearLayoutManager(this)
+        binding.RecycleView.layoutManager = layoutManager
+
+        storyAdapter = StoryAdapter()
+        binding.RecycleView.adapter = storyAdapter
     }
 }

@@ -49,21 +49,44 @@ class LoginActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
-            viewModel.saveSession(UserModel(email, "sample_token"))
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                setPositiveButton("Lanjut") { _, _ ->
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
+            val password = binding.passwordEditText.text.toString()
+
+            // Panggil fungsi login dari viewModel
+            viewModel.login(email, password) { response ->
+                // Handle respons dari fungsi login di sini
+                if (response?.error == false) {
+                    // Login berhasil
+                    val user = response.loginResult // Ambil data pengguna jika diperlukan
+                    viewModel.saveSession(UserModel(email, user?.token ?: ""))
+                    AlertDialog.Builder(this@LoginActivity).apply {
+                        setTitle("Yeah!")
+                        setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+                        setPositiveButton("Lanjut") { _, _ ->
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                            finish()
+                        }
+                        create()
+                        show()
+                    }
+                } else {
+                    // Login gagal, tampilkan pesan kesalahan jika ada
+                    val errorMessage = response?.message ?: "Login gagal"
+                    AlertDialog.Builder(this@LoginActivity).apply {
+                        setTitle("Oops!")
+                        setMessage(errorMessage)
+                        setPositiveButton("OK") { _, _ ->
+                            // Tindakan jika login gagal, misalnya menampilkan pesan kesalahan
+                        }
+                        create()
+                        show()
+                    }
                 }
-                create()
-                show()
             }
         }
     }
+
 
     private fun playAnimation() {
         ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {

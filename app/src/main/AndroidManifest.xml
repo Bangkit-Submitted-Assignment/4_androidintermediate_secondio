@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyIntermediateApplication"
         tools:targetApi="31">
+        <activity
+            android:name=".view.detail.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.upload.UploadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.UploadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.upload.UploadDataActivity"
+            android:exported="false" />
         <activity
             android:name=".view.welcome.WelcomeActivity"
             android:exported="false" />
