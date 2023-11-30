@@ -11,6 +11,7 @@ import com.dicoding.myintermediateapplication.data.pref.UserModel
 import com.dicoding.myintermediateapplication.data.response.DetailResponse
 import com.dicoding.myintermediateapplication.data.response.ListStoryItem
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MainViewModel(private val repository: UserRepository) : ViewModel() {
     private val _stories = MutableLiveData<List<ListStoryItem>>()

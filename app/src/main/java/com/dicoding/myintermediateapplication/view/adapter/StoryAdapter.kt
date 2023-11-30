@@ -32,7 +32,7 @@ class StoryAdapter :
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra("STORY_ID", story.id) // Mengirim ID cerita ke DetailActivity
+            intent.putExtra("STORY_ID", story.id)
             context.startActivity(intent)
         }
     }

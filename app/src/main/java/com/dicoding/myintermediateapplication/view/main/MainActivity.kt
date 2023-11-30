@@ -32,6 +32,10 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title= getString(R.string.app_name)
 
+        setupView()
+        setupAction()
+        setupRecyclerView()
+
         viewModel.setStories()
         viewModel.stories.observe(this) { stories ->
             storyAdapter.submitList(stories)
@@ -44,9 +48,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        setupView()
-        setupAction()
-        setupRecyclerView()
+
         viewModel.setStories()
 //        playAnimation()
     }
@@ -94,5 +96,9 @@ class MainActivity : AppCompatActivity() {
 
         storyAdapter = StoryAdapter()
         binding.RecycleView.adapter = storyAdapter
+
+        viewModel.stories.value?.let { stories ->
+            storyAdapter.submitList(stories)
+        }
     }
 }
