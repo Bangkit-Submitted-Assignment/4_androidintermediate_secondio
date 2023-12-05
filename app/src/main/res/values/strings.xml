@@ -13,9 +13,11 @@
     <string name="message_main_page">Selamat Belajar.</string>
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
+    <string name="maps">Maps</string>
     <string name="keluar">keluar</string>
     <string name="camera">KAMERA</string>
     <string name="gallery">GALERI</string>
     <string name="desc_item">deskripsi item</string>
     <string name="upload">UPLOAD</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

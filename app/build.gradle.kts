@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -40,8 +41,6 @@ android {
 
 dependencies {
 
-    implementation("com.google.android.gms:play-services-maps:17.0.1")
-
     val cameraxVersion = "1.2.3"
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -74,6 +73,7 @@ dependencies {
     implementation("androidx.camera:camera-view:$cameraxVersion")
 
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation ("com.google.android.gms:play-services-maps:18.2.0")
 
     androidTestImplementation ("androidx.arch.core:core-testing:2.2.0") //InstantTaskExecutorRule
     androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4") //TestDispatcher
@@ -86,6 +86,8 @@ dependencies {
 
     testImplementation ("org.mockito:mockito-core:4.4.0")
     testImplementation ("org.mockito:mockito-inline:4.4.0")
+
+
 
 
 

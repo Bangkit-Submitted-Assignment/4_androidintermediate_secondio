@@ -15,6 +15,7 @@ import com.dicoding.myintermediateapplication.R
 import com.dicoding.myintermediateapplication.databinding.ActivityMainBinding
 import com.dicoding.myintermediateapplication.view.ViewModelFactory
 import com.dicoding.myintermediateapplication.view.adapter.StoryAdapter
+import com.dicoding.myintermediateapplication.view.map.MapsActivity
 import com.dicoding.myintermediateapplication.view.upload.UploadActivity
 import com.dicoding.myintermediateapplication.view.welcome.WelcomeActivity
 
@@ -84,8 +85,12 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
                 startActivity(intent)
                 return true
+            }
+            R.id.maps ->{
+                startActivity(Intent(this,MapsActivity::class.java))
+                return true
             }else->{
-            return super.onOptionsItemSelected(item)
+                return super.onOptionsItemSelected(item)
             }
         }
     }

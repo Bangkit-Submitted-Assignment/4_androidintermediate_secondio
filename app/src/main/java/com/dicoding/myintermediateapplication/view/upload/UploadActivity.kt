@@ -110,7 +110,7 @@ class UploadActivity : AppCompatActivity() {
             showImage()
         }
     }
-    
+
     private fun showImage() {
         currentImageUri?.let {
             Log.d("Image URI", "showImage: $it")

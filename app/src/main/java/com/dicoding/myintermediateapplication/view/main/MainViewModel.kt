@@ -10,6 +10,7 @@ import com.dicoding.myintermediateapplication.data.UserRepository
 import com.dicoding.myintermediateapplication.data.pref.UserModel
 import com.dicoding.myintermediateapplication.data.response.DetailResponse
 import com.dicoding.myintermediateapplication.data.response.ListStoryItem
+import com.dicoding.myintermediateapplication.data.response.ListStoryResponse
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -21,6 +22,10 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
     private val _detail = MutableLiveData<DetailResponse>()
     val detail: LiveData<DetailResponse>
         get() = _detail
+
+    private val _maps = MutableLiveData<ListStoryResponse>()
+    val maps: LiveData<ListStoryResponse>
+        get() = _maps
 
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()
@@ -49,7 +54,17 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                 val detailResponse = repository.getStoryDetail(storyId)
                 _detail.value = detailResponse!!
             } catch (e: Exception) {
-                // Tambahkan penanganan error jika diperlukan
+            }
+        }
+    }
+
+    fun getStoryWithLocation() {
+        viewModelScope.launch {
+            try {
+                val mapsResponse = repository.getStoriesWithLocation()
+                _maps.value = mapsResponse
+            } catch (e: Exception) {
+                Log.e("API Error", "Error fetching stories with location: ${e.message}")
             }
         }
     }

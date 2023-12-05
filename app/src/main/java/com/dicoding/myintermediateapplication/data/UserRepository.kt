@@ -45,6 +45,16 @@ class UserRepository private constructor(
         return apiService.getStories("Bearer $token")
     }
 
+    suspend fun getStoriesWithLocation(): ListStoryResponse {
+        try {
+            token = userPreference.getToken()
+        }catch (e:Exception){
+            Log.e("User Repo ", e.toString())
+        }
+        return apiService.getStoriesWithLocation("Bearer $token",1)
+    }
+
+
     suspend fun getStoryDetail(storyId: String): DetailResponse? {
         var detailResponse: DetailResponse? = null
         try {
