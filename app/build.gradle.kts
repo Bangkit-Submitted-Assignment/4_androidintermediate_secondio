@@ -82,9 +82,6 @@ dependencies {
     androidTestImplementation ("androidx.test:runner:1.5.2")
     androidTestImplementation ("androidx.test:rules:1.5.0")
 
-    testImplementation ("org.mockito:mockito-core:4.4.0")
-    testImplementation ("org.mockito:mockito-inline:4.4.0")
-    testImplementation ("org.powermock:powermock-core:1.7.4")
-    testImplementation ("org.powermock:powermock-module-testng:1.7.4")
-    testImplementation ("org.powermock:powermock-api-mockito2:1.7.4")
+    testImplementation ("org.mockito:mockito-core:3.12.4")
+    testImplementation ("org.mockito:mockito-inline:3.12.4")
 }
