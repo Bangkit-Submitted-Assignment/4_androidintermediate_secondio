@@ -13,7 +13,6 @@ import com.dicoding.myintermediateapplication.data.response.DetailResponse
 import com.dicoding.myintermediateapplication.data.response.ListStoryItem
 import com.dicoding.myintermediateapplication.data.response.ListStoryResponse
 import kotlinx.coroutines.launch
-import java.io.File
 
 class MainViewModel(private val repository: UserRepository) : ViewModel() {
     private val _stories = MutableLiveData<List<ListStoryItem>>()
@@ -42,23 +41,13 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun setStories() {
-        viewModelScope.launch {
-            try {
-                val storiesResponse = repository.getStory()
-                _stories.value = storiesResponse.listStory as List<ListStoryItem>?
-            } catch (e: Exception) {
-                Log.e("API Error", "Error fetching stories: ${e.message}")
-            }
-        }
-    }
-
     fun getStoryDetail(storyId: String) {
         viewModelScope.launch {
             try {
                 val detailResponse = repository.getStoryDetail(storyId)
                 _detail.value = detailResponse!!
             } catch (e: Exception) {
+
             }
         }
     }

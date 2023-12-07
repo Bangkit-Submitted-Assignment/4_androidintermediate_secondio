@@ -42,15 +42,6 @@ class UserRepository private constructor(
         userPreference.logout()
     }
 
-    suspend fun getStory():ListStoryResponse{
-        try {
-             token = userPreference.getToken()
-        }catch (e:Exception){
-            Log.e("User Repo ", e.toString())
-        }
-        return apiService.getStories("Bearer $token")
-    }
-
     suspend fun getStoriesWithLocation(): ListStoryResponse {
         try {
             token = userPreference.getToken()
@@ -70,7 +61,6 @@ class UserRepository private constructor(
             }
         ).liveData
     }
-
 
     suspend fun getStoryDetail(storyId: String): DetailResponse? {
         var detailResponse: DetailResponse? = null
