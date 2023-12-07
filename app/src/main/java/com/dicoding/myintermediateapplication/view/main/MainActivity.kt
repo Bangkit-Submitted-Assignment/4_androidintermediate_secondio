@@ -10,14 +10,19 @@ import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.myintermediateapplication.R
 import com.dicoding.myintermediateapplication.databinding.ActivityMainBinding
 import com.dicoding.myintermediateapplication.view.ViewModelFactory
+import com.dicoding.myintermediateapplication.view.adapter.LoadingStateAdapter
 import com.dicoding.myintermediateapplication.view.adapter.StoryAdapter
 import com.dicoding.myintermediateapplication.view.map.MapsActivity
 import com.dicoding.myintermediateapplication.view.upload.UploadActivity
 import com.dicoding.myintermediateapplication.view.welcome.WelcomeActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
@@ -37,20 +42,27 @@ class MainActivity : AppCompatActivity() {
         setupAction()
         setupRecyclerView()
 
-        viewModel.setStories()
-        viewModel.stories.observe(this) { stories ->
-            storyAdapter.submitList(stories)
-        }
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
+            }else{
+                val token = user.token
+                val adapter = StoryAdapter()
+                binding.RecycleView.adapter = adapter.withLoadStateFooter(
+                    footer = LoadingStateAdapter {
+                        adapter.retry()
+                    }
+                )
+                viewModel.getStoryPaging(token).observe(this, {
+                    adapter.submitData(lifecycle, it)
+                })
             }
         }
 
 
-        viewModel.setStories()
+//        viewModel.setStories()
 //        playAnimation()
     }
 
@@ -95,15 +107,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
         binding.RecycleView.layoutManager = layoutManager
 
         storyAdapter = StoryAdapter()
-        binding.RecycleView.adapter = storyAdapter
+        binding.RecycleView.adapter = storyAdapter.withLoadStateHeaderAndFooter(
+            header = LoadingStateAdapter { storyAdapter.retry() },
+            footer = LoadingStateAdapter { storyAdapter.retry() }
+        )
 
-        viewModel.stories.value?.let { stories ->
-            storyAdapter.submitList(stories)
+        // Menggunakan collectLatest untuk mengamati perubahan load state dari adapter
+        lifecycleScope.launch {
+            storyAdapter.loadStateFlow.collectLatest { loadStates ->
+                if (loadStates.refresh is LoadState.Loading) {
+                    // Handle loading state
+                } else if (loadStates.refresh is LoadState.Error) {
+                    // Handle error state
+                }
+                // Handle other states as needed
+            }
         }
     }
 }

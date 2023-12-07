@@ -74,6 +74,7 @@ dependencies {
 
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
     implementation ("com.google.android.gms:play-services-maps:18.2.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
 
     androidTestImplementation ("androidx.arch.core:core-testing:2.2.0") //InstantTaskExecutorRule
     androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4") //TestDispatcher

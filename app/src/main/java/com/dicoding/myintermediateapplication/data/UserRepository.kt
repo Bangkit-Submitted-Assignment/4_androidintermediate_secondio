@@ -1,9 +1,15 @@
 package com.dicoding.myintermediateapplication.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.dicoding.myintermediateapplication.data.pref.UserModel
 import com.dicoding.myintermediateapplication.data.pref.UserPreference
 import com.dicoding.myintermediateapplication.data.response.DetailResponse
+import com.dicoding.myintermediateapplication.data.response.ListStoryItem
 import com.dicoding.myintermediateapplication.data.response.ListStoryResponse
 import com.dicoding.myintermediateapplication.data.response.LoginResponse
 import com.dicoding.myintermediateapplication.data.response.RegisterResponse
@@ -52,6 +58,17 @@ class UserRepository private constructor(
             Log.e("User Repo ", e.toString())
         }
         return apiService.getStoriesWithLocation("Bearer $token",1)
+    }
+
+    fun getStoryPaging(token:String): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService, "Bearer $token")
+            }
+        ).liveData
     }
 
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.dicoding.myintermediateapplication.data.UserRepository
 import com.dicoding.myintermediateapplication.data.pref.UserModel
 import com.dicoding.myintermediateapplication.data.response.DetailResponse
@@ -26,6 +27,10 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
     private val _maps = MutableLiveData<ListStoryResponse>()
     val maps: LiveData<ListStoryResponse>
         get() = _maps
+
+    fun getStoryPaging(token:String): LiveData<PagingData<ListStoryItem>> {
+        return repository.getStoryPaging(token)
+    }
 
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()

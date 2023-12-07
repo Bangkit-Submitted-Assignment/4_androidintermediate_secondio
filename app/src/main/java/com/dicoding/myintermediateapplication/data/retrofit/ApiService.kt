@@ -42,7 +42,11 @@ interface ApiService {
     ): AddNewStoryResponse
 
     @GET("stories")
-    suspend fun getStories(@Header("Authorization") token: String): ListStoryResponse
+    suspend fun getStories(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 20
+        ): ListStoryResponse
 
     @GET("stories/{storyId}")
     suspend fun getStoryDetail(
@@ -55,4 +59,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("location") location : Int = 1
     ): ListStoryResponse
+
+
 }
